@@ -10,6 +10,12 @@ JOIN produk ON leads.id_produk = produk.id_produk
 JOIN sales ON leads.id_sales = sales.id_sales;
 ";
 $leads = $conn->query($query_leads);
+
+$query_products = "SELECT * from produk";
+$products = $conn->query($query_products);
+
+$query_sales = "SELECT * from sales";
+$sales = $conn->query($query_sales);
 ?>
 
 <!DOCTYPE html>
@@ -30,6 +36,39 @@ $leads = $conn->query($query_leads);
 			<button class="button__add">Tambah</button>
 		</a>
 	</div>
+	<form class="form__filter">
+		<div class="form__filter__field">
+			<label for="product">Produk</label><br />
+			<select name="product" id="product" required>
+				<option value="all">Semua Produk</option>
+				<?php while ($row = $products->fetch_assoc()): ?>
+					<option value="<?= $row['id_produk'] ?>">
+						<?= htmlspecialchars($row['nama_produk']) ?>
+					</option>
+				<?php endwhile; ?>
+			</select>
+		</div>
+
+		<div class="form__filter__field">
+			<label for="sales">Produk</label><br />
+			<select name="sales" id="sales" required>
+				<option value="all">Semua Sales</option>
+				<?php while ($row = $sales->fetch_assoc()): ?>
+					<option value="<?= $row['id_sales'] ?>">
+						<?= htmlspecialchars($row['nama_sales']) ?>
+					</option>
+				<?php endwhile; ?>
+			</select>
+		</div>
+
+		<div class="form__filter__field calendar">
+			<label for="month">Bulan</label>
+			<input type="month" id="month" name="month" required />
+		</div>
+
+
+
+	</form>
 	<main>
 		<table>
 			<tr>

@@ -20,6 +20,7 @@ main {
 	margin: 2rem auto;
 }
 
+/* add_lead.php */
 .content__top {
 	background-color: whitesmoke;
 	padding: 1rem;
@@ -135,6 +136,31 @@ th {
 td {
 	background-color: white;
 }
+ .form__filter {
+	display: flex;
+	flex-direction: row;
+	gap: 2rem;
+ }
+
+ .form__filter > * {
+	display: flex;
+	flex-direction: column;
+ }
+
+ .form__filter > * {
+	display: flex;
+	flex-direction: column;
+ }
+
+ .form__filter__field {
+	width: 30%;
+ }
+
+ .calendar {
+	display: flex;
+	flex-direction: column;
+	gap: .8rem;
+ }
 
 @media (min-width: 768px) {
 	.form-leads {
