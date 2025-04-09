@@ -7,9 +7,41 @@ $query_leads = "SELECT
 	sales.nama_sales
 FROM leads
 JOIN produk ON leads.id_produk = produk.id_produk
-JOIN sales ON leads.id_sales = sales.id_sales;
-";
-$leads = $conn->query($query_leads);
+JOIN sales ON leads.id_sales = sales.id_sales
+WHERE 1=1";
+
+$params = [];
+$types = "";
+
+// Filter produk
+if (isset($_GET['filter_product']) && $_GET['filter_product'] !== '') {
+	$query_leads .= " AND leads.id_produk = ?";
+	$params[] = $_GET['filter_product'];
+	$types .= "i";
+}
+
+// Filter sales
+if (isset($_GET['filter_sales']) && $_GET['filter_sales'] !== '') {
+	$query_leads .= " AND leads.id_sales = ?";
+	$params[] = $_GET['filter_sales'];
+	$types .= "i";
+}
+
+// Filter tanggal
+if (isset($_GET['filter_date']) && $_GET['filter_date'] !== '') {
+	// dari input type="month", ambil bulan dan tahun aja (format: YYYY-MM)
+	$month = $_GET['filter_date'];
+	$query_leads .= " AND DATE_FORMAT(tanggal, '%Y-%m') = ?";
+	$params[] = $month;
+	$types .= "s";
+}
+
+$stmt = $conn->prepare($query_leads);
+if (!empty($params)) {
+	$stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$result = $stmt->get_result();
 
 $query_products = "SELECT * from produk";
 $products = $conn->query($query_products);
@@ -17,6 +49,7 @@ $products = $conn->query($query_products);
 $query_sales = "SELECT * from sales";
 $sales = $conn->query($query_sales);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,10 +72,10 @@ $sales = $conn->query($query_sales);
 	<form class="form__filter">
 		<div class="form__filter__field">
 			<label for="product">Produk</label><br />
-			<select name="product" id="product" required>
-				<option value="all">Semua Produk</option>
+			<select name="filter_product" id="product" onchange="this.form.submit()">
+				<option value="" <?= (!isset($_GET['filter_product']) || $_GET['filter_product'] === '') ? 'selected' : '' ?>>Semua Produk</option>
 				<?php while ($row = $products->fetch_assoc()): ?>
-					<option value="<?= $row['id_produk'] ?>">
+					<option value=" <?= $row['id_produk'] ?>" <?= (isset($_GET['filter_product']) && $_GET['filter_product'] == $row['id_produk']) ? 'selected' : '' ?>>
 						<?= htmlspecialchars($row['nama_produk']) ?>
 					</option>
 				<?php endwhile; ?>
@@ -50,11 +83,11 @@ $sales = $conn->query($query_sales);
 		</div>
 
 		<div class="form__filter__field">
-			<label for="sales">Produk</label><br />
-			<select name="sales" id="sales" required>
-				<option value="all">Semua Sales</option>
+			<label for="sales">Sales</label><br />
+			<select name="filter_sales" id="sales" onchange="this.form.submit()">
+				<option value="" <?= (!isset($_GET['filter_sales']) || $_GET['filter_sales'] === '') ? 'selected' : '' ?>>Semua Sales</option>
 				<?php while ($row = $sales->fetch_assoc()): ?>
-					<option value="<?= $row['id_sales'] ?>">
+					<option value=" <?= $row['id_sales'] ?>" <?= (isset($_GET['filter_sales']) && $_GET['filter_sales'] == $row['id_sales']) ? 'selected' : '' ?>>
 						<?= htmlspecialchars($row['nama_sales']) ?>
 					</option>
 				<?php endwhile; ?>
@@ -63,7 +96,7 @@ $sales = $conn->query($query_sales);
 
 		<div class="form__filter__field calendar">
 			<label for="month">Bulan</label>
-			<input type="month" id="month" name="month" required />
+			<input type="month" id="month" name="filter_date" value="<?= $_GET['filter_date'] ?? '' ?>" onchange="this.form.submit()">
 		</div>
 
 
@@ -84,7 +117,7 @@ $sales = $conn->query($query_sales);
 
 			<?php
 			$no = 1;
-			while ($row = $leads->fetch_assoc()): ?>
+			while ($row = $result->fetch_assoc()): ?>
 				<tr>
 					<td><?= $no++ ?></td>
 					<td><?= htmlspecialchars($row['id_leads']) ?></td>

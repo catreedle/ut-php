@@ -7,6 +7,7 @@ A simple PHP + MySQL app to manage leads.
 - Add new leads
 - Display stored leads
 - Connects to MySQL database
+- Filter based on product, sales, and month
 
 ## Setup
 - Clone the repo
