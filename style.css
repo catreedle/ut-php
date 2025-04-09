@@ -1,0 +1,145 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: 1rem;
+	background-color: aliceblue;
+	font-family: monospace;
+}
+
+main {
+	box-sizing: border-box;
+	border: 1px solid black;
+	border-radius: 25px;
+	overflow: hidden;
+	width: 100%;
+	margin: 2rem auto;
+}
+
+.content__top {
+	background-color: whitesmoke;
+	padding: 1rem;
+}
+
+.content__bottom {
+	background-color: white;
+	padding: 1rem;
+}
+
+input,
+select {
+	padding: 0.5rem;
+}
+
+select {
+	margin-bottom: 1rem;
+}
+
+button, a {
+	padding: 10px 20px;
+	font-size: 16px;
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+.button__back,
+.button__add {
+	background-color: #04aa6d; /* Green */
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	border-radius: 20px;
+	margin: 1rem;
+}
+
+.button__back:hover,
+.button__back:focus {
+	background-color: #059862;
+}
+
+.form-leads {
+	display: block;
+}
+
+.form-leads > * {
+	padding: 1rem;
+}
+
+.form-leads__col {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.form-leads__field {
+	display: flex;
+	flex-direction: column;
+}
+
+.button__group {
+	display: flex;
+	gap: 1rem;
+	justify-content: center;
+	padding: 1rem;
+}
+
+.button__save {
+	background-color: #5d3fd3;
+	color: white;
+}
+
+.button__save:hover,
+.button__save:focus {
+	background-color: blueviolet;
+}
+
+.button__cancel {
+	background-color: whitesmoke;
+}
+
+.button__cancel:hover,
+.button__cancel:focus {
+	background-color: tomato;
+}
+
+/* index.php */
+.header {
+	display: flex;
+	justify-content: space-between;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+th,
+td {
+	border: 1px solid #999;
+	padding: 8px;
+	text-align: left;
+}
+th {
+	background-color: whitesmoke;
+}
+td {
+	background-color: white;
+}
+
+@media (min-width: 768px) {
+	.form-leads {
+		display: grid;
+		grid-auto-rows: 1fr;
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}
