@@ -15,7 +15,7 @@ A simple PHP + MySQL app to manage leads.
 
 1. Create a MySQL database named `leads`
 2. Import the included `leads.sql` using phpMyAdmin or MySQL CLI
-3. Copy `.env.example` to `.env` and fill in your DB credentials
+3. Copy `.env.example.php` to `.env.php` and fill in your DB credentials
 
 
 ## Run
